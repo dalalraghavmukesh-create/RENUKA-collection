@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Your Cart</title>
+<style>
+body{font-family:Arial;text-align:center;}
+#list{border:1px solid #ccc;padding:10px;margin:20px;}
+button{padding:10px;margin:5px;}
+</style>
+</head>
+
+<body>
+
+<h1>🛍️ Your Cart</h1>
+
+<div id="list"></div>
+<h2 id="total"></h2>
+
+<!-- बदललेला button -->
+<button onclick="bookWhatsApp()">Book the things</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let list = document.getElementById("list");
+let total = 0;
+
+cart.forEach(p=>{
+  list.innerHTML += `<p>✔ ${p.item} - ₹${p.price}</p>`;
+  total += p.price;
+});
+
+document.getElementById("total").innerText = "Total: ₹"+total;
+
+function bookWhatsApp(){
+  let text = "Booking request: ";
+  cart.forEach(p=> text += p.item + ", ");
+  text += "Total: ₹"+total;
+
+  window.location.href =
+  "https://wa.me/919273363111?text=" + encodeURIComponent(text);
+}
+</script>
+
+</body>
+</html>
