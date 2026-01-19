@@ -7,6 +7,26 @@
 <title>Renuka Collection</title>
 
 <style>
+  .container{
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap:15px;
+padding:15px;
+}
+
+.product{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+border-radius:10px;
+}
+
+.product img{
+width:100%;
+max-height:150px;
+object-fit:contain;
+}
+
 body{
 font-family: Arial;
 margin: 0;
@@ -67,6 +87,14 @@ window.open(url, "_blank");
 </script>
 
 </head>
+  <script>
+function bookItem(name, price){
+let phone = "919273363111";   // ← इथे तुमचा WhatsApp नंबर टाका
+let msg = "Hello Renuka Collection, I want to book: " + name + " for ₹" + price;
+let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+window.open(url, "_blank");
+}
+</script>
 <body>
 
 <header>
@@ -189,5 +217,6 @@ window.open(url, "_blank");
 
 </body>
 </html>
+
 
 
