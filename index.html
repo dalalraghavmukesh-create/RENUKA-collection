@@ -71,6 +71,17 @@ width:100%;
 }
 
 footer{
+  <hr>
+
+<h2 style="text-align:center;">Store Verification Panel</h2>
+
+<div style="text-align:center; margin:20px; padding:10px; border:1px solid black;">
+<input id="storeOTPInput" placeholder="Enter customer OTP">
+<button onclick="verifyOTP()">Verify</button>
+
+<p id="result"></p>
+</div>
+
 text-align:center;
 padding:10px;
 background:#8e44ad;
@@ -89,12 +100,32 @@ window.open(url, "_blank");
 </head>
   <script>
 function bookItem(name, price){
-let phone = "919273363111";   // ← इथे तुमचा WhatsApp नंबर टाका
+let phone = "919273363111";   
 let msg = "Hello Renuka Collection, I want to book: " + name + " for ₹" + price;
 let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
 window.open(url, "_blank");
 }
 </script>
+
+  <script>
+function verifyOTP(){
+
+let entered = document.getElementById("storeOTPInput").value;
+let savedOTP = localStorage.getItem("storeOTP");
+let item = localStorage.getItem("bookedItem");
+let price = localStorage.getItem("bookedPrice");
+
+if(entered == savedOTP){
+document.getElementById("result").innerHTML =
+"✅ Match Found!<br>Booked Item: " + item + "<br>Price: ₹" + price;
+}
+else{
+document.getElementById("result").innerHTML =
+"❌ Wrong OTP. No booking found.";
+}
+}
+</script>
+
 <body>
 
 <header>
@@ -217,6 +248,7 @@ window.open(url, "_blank");
 
 </body>
 </html>
+
 
 
 
