@@ -127,6 +127,72 @@ document.getElementById("result").innerHTML =
 </script>
 
 <body>
+  <div id="password-box" style="
+max-width:400px;
+margin:40px auto;
+padding:20px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+background:#fff;
+">
+
+<h3>🔐 Admin Access</h3>
+
+<input type="password" id="adminPass"
+placeholder="Enter Password"
+style="width:100%;padding:10px;margin-bottom:15px;">
+
+<button onclick="checkPassword()" style="
+padding:10px 20px;
+background:black;
+color:white;
+border:none;
+border-radius:6px;
+">
+Unlock Panel
+</button>
+
+<p id="wrongPass" style="color:red;display:none;">Wrong Password</p>
+
+</div>
+
+<section id="admin-panel" style="
+max-width:600px;
+margin:30px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+background:#ffffff;
+">
+
+<h2 style="text-align:center;">🛠 Add Items Panel (Renuka Collection)</h2>
+
+<label>Item Name</label>
+<input id="itemName" type="text" placeholder="Example: Canvas"
+style="width:100%;padding:10px;margin-bottom:10px;">
+
+<label>Price (₹)</label>
+<input id="itemPrice" type="number" placeholder="Example: 40"
+style="width:100%;padding:10px;margin-bottom:10px;">
+
+<label>Image File Name</label>
+<input id="itemImg" type="text" placeholder="Example: canvas.png"
+style="width:100%;padding:10px;margin-bottom:15px;">
+
+<button onclick="addItem()" style="
+width:100%;
+padding:12px;
+font-size:16px;
+background:black;
+color:white;
+border:none;
+border-radius:6px;
+">
+Add Item
+</button>
+
+</section>
 
 <header>
 <h1>Renuka Collection</h1>
@@ -135,105 +201,105 @@ document.getElementById("result").innerHTML =
 
 <div class="container">
   
-<div class="product">
+<div class="product" id="products">
 <img src="canvas.png">
 <h3>Canvas (per meter)</h3>
 <p>₹40</p>
 <button onclick="bookItem('Canvas per meter',40)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="fabric glue primium.png">
 <h3>Fabric Glue Premium</h3>
 <p>₹25</p>
 <button onclick="bookItem('Fabric Glue Premium',25)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="fabric glue.png">
 <h3>Fabric Glue</h3>
 <p>₹17</p>
 <button onclick="bookItem('Fabric Glue',17)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="glue gun.png">
 <h3>Glue Gun</h3>
 <p>₹325</p>
 <button onclick="bookItem('Glue Gun',325)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="shills.png">
 <h3>Shills Wipes</h3>
 <p>₹99</p>
 <button onclick="bookItem('Shills Wipes',99)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="moon rill.png">
 <h3>Rill All Colors</h3>
 <p>₹5</p>
 <button onclick="bookItem('Rill All Colors',5)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="b 7000 50ml.png">
 <h3>B 7000 25ml</h3>
 <p>₹50</p>
 <button onclick="bookItem('B 7000 25ml',50)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="acrilic color.png">
 <h3>Fevicryl Acrylic Colors</h3>
 <p>₹25</p>
 <button onclick="bookItem('Fevicryl Acrylic Colors',25)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="silk thread.png">
 <h3>Silk Thread (All Colors)</h3>
 <p>₹25</p>
 <button onclick="bookItem('Silk Thread',25)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="peacock feather.png">
 <h3>Peacock Feather</h3>
 <p>₹15</p>
 <button onclick="bookItem('Peacock Feather',15)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="fevi quick.png">
 <h3>Feviquick</h3>
 <p>₹5</p>
 <button onclick="bookItem('Feviquick',5)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="doli thread.png">
 <h3>Doli Thread (All Colors)</h3>
 <p>₹5</p>
 <button onclick="bookItem('Doli Thread',5)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="b 7000 110ml.png">
 <h3>B 7000 110ml</h3>
 <p>₹100</p>
 <button onclick="bookItem('B 7000 110ml',100)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="ari work thread.png">
 <h3>Ari Work Thread</h3>
 <p>₹30</p>
 <button onclick="bookItem('Ari Work Thread',30)">Book the thing</button>
 </div>
 
-<div class="product">
+<div class="product" id="products">
 <img src="ari work needle.png">
 <h3>Ari Work Needle</h3>
 <p>₹30</p>
@@ -243,11 +309,56 @@ document.getElementById("result").innerHTML =
 </div>
 
 <footer>
-© Renuka Collection | WhatsApp Orders Only
+© Renuka Collection | WhatsApp Orders Only | costumer care no.9273363111
 </footer>
+<script>
+function addItem(){
+
+let name = document.getElementById("itemName").value;
+let price = document.getElementById("itemPrice").value;
+let img = document.getElementById("itemImg").value;
+
+if(name=="" || price=="" || img==""){
+alert("Fill all fields");
+return;
+}
+
+let product = document.createElement("div");
+product.className = "product";
+
+product.innerHTML = `
+<img src="${img}" alt="${name}">
+<h3>${name}</h3>
+<p>₹${price}</p>
+<button onclick="bookItem('${name}',${price})">Book the thing</button>
+`;
+
+document.getElementById("products").appendChild(product);
+
+// clear inputs
+document.getElementById("itemName").value="";
+document.getElementById("itemPrice").value="";
+document.getElementById("itemImg").value="";
+}
+</script>
+<script>
+const ADMIN_PASSWORD = "sbi@#123";  
+
+function checkPassword(){
+let pass = document.getElementById("adminPass").value;
+
+if(pass === ADMIN_PASSWORD){
+document.getElementById("admin-panel").style.display = "block";
+document.getElementById("password-box").style.display = "none";
+}else{
+document.getElementById("wrongPass").style.display = "block";
+}
+}
+</script>
 
 </body>
 </html>
+
 
 
 
