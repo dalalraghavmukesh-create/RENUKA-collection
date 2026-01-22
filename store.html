@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Renuka Collection – Store Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+font-family:Arial;
+background:#f2f2f2;
+}
+
+.panel{
+max-width:400px;
+margin:50px auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 15px gray;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:12px;
+font-size:18px;
+margin-bottom:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+font-size:18px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:8px;
+}
+
+#result{
+margin-top:15px;
+font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="panel">
+<h2>Store Verification</h2>
+<p>Customer OTP टाका</p>
+
+<input id="otpInput" placeholder="Enter OTP">
+
+<button onclick="verify()">Verify</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+function verify(){
+let entered = document.getElementById("otpInput").value;
+let otp = localStorage.getItem("storeOTP");
+let item = localStorage.getItem("bookedItem");
+let price = localStorage.getItem("bookedPrice");
+
+if(entered == otp){
+document.getElementById("result").innerHTML =
+"✅ Booking Found<br><br>" +
+"<b>Item:</b> " + item + "<br>" +
+"<b>Price:</b> ₹" + price;
+}
+else{
+document.getElementById("result").innerHTML =
+"❌ No booking found";
+}
+}
+</script>
+
+</body>
+</html>
