@@ -127,7 +127,48 @@ document.getElementById("products").innerHTML=html;
 
 showProducts();
 </script>
+<script>
+function getOrders(){
+  const mob = document.getElementById("searchMobile").value;
+  const orders = JSON.parse(localStorage.getItem("orders")) || {};
+  const result = document.getElementById("orderResult");
+
+  result.innerHTML = "";
+
+  if(!orders[mob] || orders[mob].length === 0){
+    result.innerHTML = "<p>No orders found</p>";
+    return;
+  }
+
+  orders[mob].forEach((o,index)=>{
+    result.innerHTML += `
+      <div style="border:1px solid #ccc;padding:10px;margin:8px;">
+        <b>${o.product}</b> - ₹${o.price}<br>
+        <small>${o.time}</small><br><br>
+
+        <button onclick="completeOrder('${mob}',${index})">Complete</button>
+        <button onclick="deleteOrder('${mob}',${index})">Delete</button>
+      </div>
+    `;
+  });
+}
+
+function deleteOrder(mob,index){
+  let orders = JSON.parse(localStorage.getItem("orders")) || {};
+  orders[mob].splice(index,1);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  getOrders();
+}
+
+function completeOrder(mob,index){
+  let orders = JSON.parse(localStorage.getItem("orders")) || {};
+  orders[mob][index].completed = true;
+  localStorage.setItem("orders", JSON.stringify(orders));
+  alert("Order marked as completed");
+}
+</script>
 
 </body>
 </html>
+
 
