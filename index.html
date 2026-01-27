@@ -1,49 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Renuka Collection</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f5f5f5;}
-header{background:black;color:white;padding:15px;text-align:center;}
-button{padding:8px 16px;border:none;border-radius:5px;cursor:pointer;}
-#loginBox{
-display:none;
-max-width:350px;
-margin:20px auto;
-background:white;
-padding:20px;
-border-radius:10px;
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f5f5f5;
 }
-input{width:100%;padding:10px;margin:8px 0;}
-#products{
-padding:15px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
+header{
+  background:#8e44ad;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+.container{
+  padding:15px;
+}
+input,button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+}
+button{
+  background:#25D366;
+  color:white;
+  border:none;
+  border-radius:6px;
 }
 .product{
-background:white;
-padding:10px;
-border-radius:10px;
-text-align:center;
+  background:white;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:6px;
 }
-.product img{
-width:100%;
-height:150px;
-object-fit:contain;
-}
-.product a{
-display:block;
-margin-top:8px;
-background:green;
-color:white;
-padding:8px;
-text-decoration:none;
-border-radius:5px;
-}
+.hidden{display:none}
 </style>
 </head>
 
@@ -51,124 +45,91 @@ border-radius:5px;
 
 <header>
 <h2>Renuka Collection</h2>
-<button onclick="openLogin()">Sign In</button>
 </header>
 
-<!-- SIGN IN -->
-<div id="loginBox">
-<h3>Admin Sign In</h3>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-<button onclick="login()">Sign In</button>
-<p id="error" style="color:red;display:none;">Invalid login</p>
+<!-- MOBILE NUMBER PANEL -->
+<div class="container" id="mobileBox">
+  <h3>Enter Mobile Number</h3>
+  <input type="tel" id="mobile" placeholder="10 digit mobile number">
+  <button onclick="startSite()">Continue</button>
 </div>
 
 <!-- PRODUCTS -->
-<div id="products"></div>
+<div class="container hidden" id="shop">
+  <h3>Products</h3>
+  <div id="products"></div>
+</div>
 
 <script>
-/* ===== ADMIN LOGIN ===== */
-const ADMIN_EMAIL = "l";
-const ADMIN_PASSWORD = "sbi@#123";
+let userMobile = "";
 
-/* ===== DEFAULT PRODUCTS ===== */
-const defaultProducts = [
-{name:"Rill All Colors",price:5,image:"moon rill.png"},
-{name:"B 7000 25ml",price:50,image:"b 7000 50ml.png"},
-{name:"Fevicryl Acrylic Colors",price:25,image:"acrilic color.png"},
-{name:"Silk Thread (All Colors)",price:25,image:"silk thread.png"},
-{name:"Peacock Feather",price:15,image:"peacock feather.png"},
-{name:"Feviquick",price:5,image:"fevi quick.png"},
-{name:"Doli Thread (All Colors)",price:5,image:"doli thread.png"},
-{name:"B 7000 110ml",price:100,image:"b 7000 110ml.png"},
-{name:"Aari Work Thread",price:30,image:"ari work thread.png"},
-{name:"Aari Work Needle (All Numbers)",price:30,image:"ari work needle.png"},
-{name:"Canvas (per meter)",price:40,image:"canvas.png"},
-{name:"Fabric Glue Premium",price:25,image:"fabric glue primium.png"},
-{name:"Fabric Glue",price:17,image:"fabric glue.png"},
-{name:"Glue Gun",price:325,image:"glue gun.png"},
-{name:"Shills Wipes",price:99,image:"shills.png"}
+const productList = [
+ {name:"Rill All Colors", price:5},
+ {name:"B-7000 25ml", price:50},
+ {name:"Acrylic Color", price:25},
+ {name:"Silk Thread", price:25},
+ {name:"Peacock Feather", price:15},
+ {name:"Feviquick", price:5},
+ {name:"Doli Thread", price:5},
+ {name:"B-7000 110ml", price:100},
+ {name:"Aari Work Thread", price:30},
+ {name:"Aari Work Needle", price:30},
+ {name:"Canvas (per meter)", price:40},
+ {name:"Fabric Glue Premium", price:25},
+ {name:"Fabric Glue", price:17},
+ {name:"Glue Gun", price:325},
+ {name:"Shills Wipes", price:99}
 ];
 
-let products = JSON.parse(localStorage.getItem("products"));
-if(!products){
-localStorage.setItem("products",JSON.stringify(defaultProducts));
-products = defaultProducts;
-}
-
-function openLogin(){
-document.getElementById("loginBox").style.display="block";
-}
-
-function login(){
-if(email.value===ADMIN_EMAIL && password.value===ADMIN_PASSWORD){
-window.location.href="admin.html";
-}else{
-document.getElementById("error").style.display="block";
-}
-}
-
-function showProducts(){
-let html="";
-products.forEach(p=>{
-html+=`
-<div class="product">
-<img src="images/${p.image}">
-<h4>${p.name}</h4>
-<p>₹${p.price}</p>
-<a href="https://wa.me/919273363111?text=I want to order ${p.name}">
-Order on WhatsApp
-</a>
-</div>
-`;
-});
-document.getElementById("products").innerHTML=html;
-}
-
-showProducts();
-</script>
-<script>
-function getOrders(){
-  const mob = document.getElementById("searchMobile").value;
-  const orders = JSON.parse(localStorage.getItem("orders")) || {};
-  const result = document.getElementById("orderResult");
-
-  result.innerHTML = "";
-
-  if(!orders[mob] || orders[mob].length === 0){
-    result.innerHTML = "<p>No orders found</p>";
+// START SITE
+function startSite(){
+  const mob = document.getElementById("mobile").value;
+  if(mob.length !== 10){
+    alert("Enter valid mobile number");
     return;
   }
+  userMobile = mob;
+  document.getElementById("mobileBox").classList.add("hidden");
+  document.getElementById("shop").classList.remove("hidden");
+  loadProducts();
+}
 
-  orders[mob].forEach((o,index)=>{
-    result.innerHTML += `
-      <div style="border:1px solid #ccc;padding:10px;margin:8px;">
-        <b>${o.product}</b> - ₹${o.price}<br>
-        <small>${o.time}</small><br><br>
-
-        <button onclick="completeOrder('${mob}',${index})">Complete</button>
-        <button onclick="deleteOrder('${mob}',${index})">Delete</button>
+// LOAD PRODUCTS
+function loadProducts(){
+  const box = document.getElementById("products");
+  box.innerHTML = "";
+  productList.forEach(p=>{
+    box.innerHTML += `
+      <div class="product">
+        <b>${p.name}</b><br>
+        ₹${p.price}<br><br>
+        <button onclick="order('${p.name}',${p.price})">
+          Order on WhatsApp
+        </button>
       </div>
     `;
   });
 }
 
-function deleteOrder(mob,index){
-  let orders = JSON.parse(localStorage.getItem("orders")) || {};
-  orders[mob].splice(index,1);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  getOrders();
-}
+// ORDER
+function order(name,price){
+  const msg = `Hello Renuka Collection,%0AProduct: ${name}%0APrice: ₹${price}%0AMobile: ${userMobile}`;
+  window.open("https://wa.me/919273363111?text="+msg);
 
-function completeOrder(mob,index){
   let orders = JSON.parse(localStorage.getItem("orders")) || {};
-  orders[mob][index].completed = true;
+  if(!orders[userMobile]) orders[userMobile] = [];
+  orders[userMobile].push({
+    product:name,
+    price:price,
+    time:new Date().toLocaleString()
+  });
   localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Order marked as completed");
 }
 </script>
 
 </body>
 </html>
+
+
 
 
