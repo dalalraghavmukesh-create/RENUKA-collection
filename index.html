@@ -1,135 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Renuka Collection</title>
-
-<style>
-body{
-  font-family: Arial, sans-serif;
-  margin:0;
-  background:#f5f5f5;
-}
-header{
-  background:#8e44ad;
-  color:white;
-  padding:15px;
-  text-align:center;
-}
-.container{
-  padding:15px;
-}
-input,button{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-}
-button{
-  background:#25D366;
-  color:white;
-  border:none;
-  border-radius:6px;
-}
-.product{
-  background:white;
-  margin-bottom:10px;
-  padding:10px;
-  border-radius:6px;
-}
-.hidden{display:none}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-<h2>Renuka Collection</h2>
-</header>
+<h1>🛍 Renuka Collection</h1>
 
-<!-- MOBILE NUMBER PANEL -->
-<div class="container" id="mobileBox">
-  <h3>Enter Mobile Number</h3>
-  <input type="tel" id="mobile" placeholder="10 digit mobile number">
-  <button onclick="startSite()">Continue</button>
-</div>
+<input type="text" id="mobile" placeholder="Enter Mobile Number">
+<button onclick="startShop()">Start Shopping</button>
 
-<!-- PRODUCTS -->
-<div class="container hidden" id="shop">
-  <h3>Products</h3>
-  <div id="products"></div>
+<hr>
+
+<div id="shop" style="display:none;">
+<h2>Products</h2>
+<div id="products"></div>
 </div>
 
 <script>
-let userMobile = "";
 
-const productList = [
- {name:"Rill All Colors", price:5},
- {name:"B-7000 25ml", price:50},
- {name:"Acrylic Color", price:25},
- {name:"Silk Thread", price:25},
- {name:"Peacock Feather", price:15},
- {name:"Feviquick", price:5},
- {name:"Doli Thread", price:5},
- {name:"B-7000 110ml", price:100},
- {name:"Aari Work Thread", price:30},
- {name:"Aari Work Needle", price:30},
- {name:"Canvas (per meter)", price:40},
- {name:"Fabric Glue Premium", price:25},
- {name:"Fabric Glue", price:17},
- {name:"Glue Gun", price:325},
- {name:"Shills Wipes", price:99}
-];
+function startShop(){
+let m=document.getElementById("mobile").value;
 
-// START SITE
-function startSite(){
-  const mob = document.getElementById("mobile").value;
-  if(mob.length !== 10){
-    alert("Enter valid mobile number");
-    return;
-  }
-  userMobile = mob;
-  document.getElementById("mobileBox").classList.add("hidden");
-  document.getElementById("shop").classList.remove("hidden");
-  loadProducts();
+if(m.length!=10){
+alert("Enter valid number");
+return;
 }
 
-// LOAD PRODUCTS
+localStorage.setItem("userMobile",m);
+document.getElementById("shop").style.display="block";
+loadProducts();
+}
+
 function loadProducts(){
-  const box = document.getElementById("products");
-  box.innerHTML = "";
-  productList.forEach(p=>{
-    box.innerHTML += `
-      <div class="product">
-        <b>${p.name}</b><br>
-        ₹${p.price}<br><br>
-        <button onclick="order('${p.name}',${p.price})">
-          Order on WhatsApp
-        </button>
-      </div>
-    `;
-  });
+
+let products=JSON.parse(localStorage.getItem("products"))||[];
+let box=document.getElementById("products");
+box.innerHTML="";
+
+products.forEach((p,i)=>{
+
+box.innerHTML+=`
+<div class="card">
+<img src="${p.image}" width="150">
+<h3>${p.name}</h3>
+<p>₹${p.price}</p>
+
+<button onclick="bookItem('${p.name}')">
+Book The Things
+</button>
+</div>
+`;
+});
 }
 
-// ORDER
-function order(name,price){
-  const msg = `Hello Renuka Collection,%0AProduct: ${name}%0APrice: ₹${price}%0AMobile: ${userMobile}`;
-  window.open("https://wa.me/919273363111?text="+msg);
+function bookItem(name){
 
-  let orders = JSON.parse(localStorage.getItem("orders")) || {};
-  if(!orders[userMobile]) orders[userMobile] = [];
-  orders[userMobile].push({
-    product:name,
-    price:price,
-    time:new Date().toLocaleString()
-  });
-  localStorage.setItem("orders", JSON.stringify(orders));
+let otp=Math.floor(1000+Math.random()*9000);
+let user=localStorage.getItem("userMobile");
+
+let orders=JSON.parse(localStorage.getItem("orders"))||[];
+
+orders.push({
+mobile:user,
+product:name,
+otp:otp
+});
+
+localStorage.setItem("orders",JSON.stringify(orders));
+
+alert("Your OTP : "+otp+"\\nShow this OTP in store");
 }
+
 </script>
 
 </body>
 </html>
-
-
-
-
