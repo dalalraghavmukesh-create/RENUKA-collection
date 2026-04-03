@@ -1,134 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Renuka Collection – Admin Panel</title>
-
-<style>
-body{
-  font-family: Arial, sans-serif;
-  background:#f4f4f4;
-  margin:0;
-  padding:0;
-}
-.container{
-  max-width:500px;
-  margin:30px auto;
-  background:#fff;
-  padding:20px;
-  border-radius:8px;
-}
-h2{text-align:center}
-input,button{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-}
-button{
-  background:#25D366;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
-button.delete{background:#d9534f}
-button.complete{background:#0275d8}
-.order-box{
-  border:1px solid #ccc;
-  padding:10px;
-  margin-top:10px;
-  border-radius:6px;
-}
-.hidden{display:none}
-</style>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container" id="loginBox">
-  <h2>Admin Login</h2>
-  <input type="password" id="adminPass" placeholder="Enter Admin Password">
-  <button onclick="login()">Sign In</button>
-  <p id="loginMsg" style="color:red"></p>
-</div>
+<h2>Admin Login</h2>
 
-<div class="container hidden" id="adminPanel">
-  <h2>Renuka Collection – Orders</h2>
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Login</button>
 
-  <input type="tel" id="searchMobile" placeholder="Enter Customer Mobile Number">
-  <button onclick="getOrders()">Check Orders</button>
+<div id="panel" style="display:none;">
 
-  <div id="orderResult"></div>
+<h3>Add Product</h3>
 
-  <br>
-  <button class="delete" onclick="logout()">Logout</button>
+<input id="pname" placeholder="Product Name"><br><br>
+<input id="price" placeholder="Price"><br><br>
+
+<input type="file" id="img"><br><br>
+
+<button onclick="addProduct()">Add Item</button>
+
+<hr>
+
+<h3>All Products</h3>
+<div id="plist"></div>
+
+<hr>
+
+<h3>Order List</h3>
+
+<input placeholder="Search Mobile" id="search">
+<button onclick="findOrder()">Find</button>
+
+<div id="orders"></div>
+
 </div>
 
 <script>
-// ===== ADMIN PASSWORD =====
-const ADMIN_PASSWORD = "sbi@#123";
 
-// ===== LOGIN =====
 function login(){
-  const pass = document.getElementById("adminPass").value;
-  if(pass === ADMIN_PASSWORD){
-    document.getElementById("loginBox").classList.add("hidden");
-    document.getElementById("adminPanel").classList.remove("hidden");
-  }else{
-    document.getElementById("loginMsg").innerText = "Wrong password!";
-  }
+
+if(document.getElementById("pass").value==="1234"){
+document.getElementById("panel").style.display="block";
+showProducts();
+}else{
+alert("Wrong Password");
+}
 }
 
-// ===== LOGOUT =====
-function logout(){
-  location.reload();
+function addProduct(){
+
+let name=pname.value;
+let price=price.value;
+let file=img.files[0];
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+let products=JSON.parse(localStorage.getItem("products"))||[];
+
+products.push({
+name:name,
+price:price,
+image:e.target.result
+});
+
+localStorage.setItem("products",JSON.stringify(products));
+
+alert("Added ✅");
+showProducts();
 }
 
-// ===== GET ORDERS =====
-function getOrders(){
-  const mob = document.getElementById("searchMobile").value;
-  const orders = JSON.parse(localStorage.getItem("orders")) || {};
-  const result = document.getElementById("orderResult");
-
-  result.innerHTML = "";
-
-  if(!orders[mob] || orders[mob].length === 0){
-    result.innerHTML = "<p>No orders found</p>";
-    return;
-  }
-
-  orders[mob].forEach((o,index)=>{
-    result.innerHTML += `
-      <div class="order-box">
-        <b>Product:</b> ${o.product}<br>
-        <b>Price:</b> ₹${o.price}<br>
-        <small>${o.time}</small><br><br>
-
-        <button class="complete" onclick="completeOrder('${mob}',${index})">Complete</button>
-        <button class="delete" onclick="deleteOrder('${mob}',${index})">Delete</button>
-      </div>
-    `;
-  });
+reader.readAsDataURL(file);
 }
 
-// ===== DELETE ORDER =====
-function deleteOrder(mob,index){
-  let orders = JSON.parse(localStorage.getItem("orders")) || {};
-  orders[mob].splice(index,1);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  getOrders();
+function showProducts(){
+
+let products=JSON.parse(localStorage.getItem("products"))||[];
+plist.innerHTML="";
+
+products.forEach((p,i)=>{
+
+plist.innerHTML+=`
+<div class="card">
+<img src="${p.image}" width="100">
+${p.name} ₹${p.price}
+<button onclick="deleteItem(${i})">Delete</button>
+</div>`;
+});
 }
 
-// ===== COMPLETE ORDER =====
-function completeOrder(mob,index){
-  let orders = JSON.parse(localStorage.getItem("orders")) || {};
-  orders[mob][index].completed = true;
-  localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Order completed");
+function deleteItem(i){
+
+let products=JSON.parse(localStorage.getItem("products"));
+products.splice(i,1);
+localStorage.setItem("products",JSON.stringify(products));
+showProducts();
 }
+
+function findOrder(){
+
+let number=search.value;
+let orders=JSON.parse(localStorage.getItem("orders"))||[];
+
+ordersDiv="";
+
+orders.forEach(o=>{
+if(o.mobile===number){
+ordersDiv+=`
+<p>Product: ${o.product}
+OTP: ${o.otp}</p>`;
+}
+});
+
+orders.innerHTML=ordersDiv;
+}
+
 </script>
 
 </body>
 </html>
-
