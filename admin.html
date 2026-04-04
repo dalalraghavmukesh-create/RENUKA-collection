@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Admin Login</h2>
+
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<div id="panel" style="display:none;">
+
+<h3>Add Product</h3>
+
+<input id="pname" placeholder="Product Name"><br><br>
+<input id="price" placeholder="Price"><br><br>
+
+<input type="file" id="img"><br><br>
+
+<button onclick="addProduct()">Add Item</button>
+
+<hr>
+
+<h3>All Products</h3>
+<div id="plist"></div>
+
+<hr>
+
+<h3>Order List</h3>
+
+<input placeholder="Search Mobile" id="search">
+<button onclick="findOrder()">Find</button>
+
+<div id="orders"></div>
+
+</div>
+
+<script>
+function addProduct(){
+
+let name = document.getElementById("pname").value;
+let priceValue = document.getElementById("price").value;
+let fileInput = document.getElementById("img");
+
+if(!fileInput.files.length){
+alert("Choose Image First");
+return;
+}
+
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
+
+products.push({
+name:name,
+price:priceValue,
+image:e.target.result
+});
+
+localStorage.setItem("products",
+JSON.stringify(products));
+
+alert("Item Added ✅");
+
+showProducts();
+}
+
+reader.readAsDataURL(fileInput.files[0]);
+}
+</script>
+
+</body>
+</html>
