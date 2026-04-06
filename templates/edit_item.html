@@ -1,0 +1,7 @@
+<h1>Edit Item</h1>
+<form action="/update_item/{{product.id}}" method="post">
+  <input type="text" name="name" value="{{product.name}}" placeholder="Item Name">
+  <input type="text" name="price" value="{{product.price}}" placeholder="Price">
+  <input type="text" name="image" value="{{product.image}}" placeholder="Image URL">
+  <button type="submit">Update Item</button>
+</form>

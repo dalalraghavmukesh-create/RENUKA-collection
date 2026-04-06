@@ -1,0 +1,10 @@
+<h1>Products</h1>
+{% for p in products %}
+  <div>
+    <img src="{{p.image}}" width="100">
+    <h3>{{p.name}}</h3>
+    <p>Price: {{p.price}}</p>
+    <a href="/book/{{p.id}}">Book</a>
+    <button>Add to Cart</button>
+  </div>
+{% endfor %}
